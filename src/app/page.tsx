@@ -1,113 +1,95 @@
-import Image from "next/image";
+"use client";
+import React, { useState } from 'react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 
-export default function Home() {
+export default function Page() {
+  const bills = [
+    { name: 'Electricity', price: 50 },
+    { name: 'Gas', price: 30 },
+    { name: 'Water', price: 20 },
+  ];
+
+  const availableLabels = ['Label 1', 'Label 2', 'Label 3'];
+  const [selectedLabels, setSelectedLabels] = useState<String[]>([]);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <div className="p-4 flex flex-col items-center">
+      <h1 className="text-2xl font-bold mb-4">My bills, made simple</h1>
+
+      <p className="mb-4">A simple web app to help you keep track of your bills.</p>
+
+      <h2 className="text-xl font-bold mb-2">All bills:</h2>
+      <table className="w-60%">
+        <thead>
+          <tr>
+            <th className="text-left py-2 px-4">Bill</th>
+            <th className="text-left py-2 px-4">Price</th>
+            <th className="text-left py-2 px-4">Paid</th>
+            <th className="text-left py-2 px-4">Labels</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bills.map((bill, index) => (
+            <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
+              <td className="py-2 px-4">{bill.name}</td>
+              <td className="py-2 px-4">{bill.price}</td>
+              <td className="py-2 px-4">
+                <input type="checkbox" id={`bill-${index}`} name={`bill-${index}`} value={`bill-${index}`} className="mr-2" />
+                <label htmlFor={`bill-${index}`}>Paid</label>
+              </td>
+              <td className="py-2 px-4">
+                <p>
+                  {selectedLabels}
+                </p>
+                <button onClick={onOpen}>Open Modal</button>
+                <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                  <ModalContent>
+                    {(onClose) => (
+                      <>
+                        <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                        <ModalBody>
+                          <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Nullam pulvinar risus non risus hendrerit venenatis.
+                            Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                          </p>
+                          <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Nullam pulvinar risus non risus hendrerit venenatis.
+                            Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                          </p>
+                          <p>
+                            Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                            dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis.
+                            Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
+                            Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur
+                            proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
+                          </p>
+                        </ModalBody>
+                        <ModalFooter>
+                          <button color="danger" onClick={onClose}>
+                            Close
+                          </button>
+                          <button color="primary" onClick={onClose}>
+                            Action
+                          </button>
+                        </ModalFooter>
+                      </>
+                    )}
+                  </ModalContent>
+                </Modal>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="flex justify-end mt-4">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Add Bill
+        </button>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+    </div>
+  )
 }
